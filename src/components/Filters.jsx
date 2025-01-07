@@ -10,20 +10,6 @@ function Filters({
     resetPagination();
   };
 
-  const handleScoreRangeChange = (e) => {
-    setScoreRangeFilter(e.target.value);
-    resetPagination();
-  };
-
-  const handleDateRangeChange = (e) => {
-    if (e.target.name === "startDate") {
-      setStartDateFilter(e.target.value);
-    } else if (e.target.name === "endDate") {
-      setEndDateFilter(e.target.value);
-    }
-    resetPagination();
-  };
-
   const resetFilters = () => {
     window.location.reload();
   };
@@ -79,7 +65,7 @@ function Filters({
 
           <select
             value={scoreRangeFilter}
-            onChange={handleScoreRangeChange}
+            onChange={handleChange(setScoreRangeFilter)}
             className="filter-dropdown"
           >
             <option value="All">All Scores</option>
@@ -95,7 +81,7 @@ function Filters({
               type="date"
               name="startDate"
               value={startDateFilter}
-              onChange={handleDateRangeChange}
+              onChange={handleChange(setStartDateFilter)}
               className="date-input"
               placeholder="Start Date"
             />
@@ -104,7 +90,7 @@ function Filters({
               type="date"
               name="endDate"
               value={endDateFilter}
-              onChange={handleDateRangeChange}
+              onChange={handleChange(setEndDateFilter)}
               className="date-input"
             />
           </div>

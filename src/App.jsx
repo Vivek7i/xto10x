@@ -3,6 +3,7 @@ import sampleData from "./sample_data.json";
 import Filters from "./components/Filters";
 import Table from "./components/Table";
 import Pagination from "./components/Pagination";
+import Modal from "./components/Modal";
 import useSort from "./hooks/useSort";
 import "./App.css";
 
@@ -22,12 +23,11 @@ function App() {
 
   const pageSize = 10;
 
-  const { sortedUsers, sortConfig, requestSort } = useSort(users);
-
   useEffect(() => {
     setUsers(sampleData); 
   }, []);
 
+  const { sortedUsers, sortConfig, requestSort } = useSort(users);
  
   const filteredUsers = sortedUsers.filter((user) => {
     const matchesSearch =
@@ -68,15 +68,6 @@ function App() {
     currentPage * pageSize
   );
 
-
-  const toggleColumnVisibility = (column) => {
-    setVisibleColumns((prev) =>
-      prev.includes(column)
-        ? prev.filter((col) => col !== column)
-        : [...prev, column]
-    );
-  };
-
   return (
     <div className="container">
       <h1>Employee's Data ({filteredUsers.length})</h1>
@@ -111,31 +102,10 @@ function App() {
           goToPage={setCurrentPage}
         />
       )}
-
-      <div id="column-modal" className="modal">
-        <div className="modal-content">
-          <h2>Manage Columns</h2>
-          <div className="checkboxes">
-            {["Name", "ID", "Gender", "Date", "ManagerEmail", "Score", "Tenure", "Rating", "Status", "Amount", "Location"].map((column) => (
-              <div key={column} className="checkbox-wrapper">
-                <input
-                  type="checkbox"
-                  id={`column-${column}`}
-                  checked={visibleColumns.includes(column)}
-                  onChange={() => toggleColumnVisibility(column)}
-                />
-                <label htmlFor={`column-${column}`}>{column}</label>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => document.getElementById("column-modal").style.display = "none"}
-            className="close-btn"
-          >
-            Close
-          </button>
-        </div>
-      </div>
+      <Modal
+        visibleColumns={visibleColumns}
+        setVisibleColumns={setVisibleColumns}
+      />
     </div>
   );
 }
